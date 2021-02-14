@@ -20,4 +20,13 @@ public class ClienteService {
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 		}
 
+//	public Cliente buscar(Integer id) {
+//		Cliente obj = repo.findOne(id);
+//		if (obj == null) {
+//			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+//					+ ", Tipo: " + Cliente.class.getName());
+//		}
+//		return obj;
+//	}
+
 }
