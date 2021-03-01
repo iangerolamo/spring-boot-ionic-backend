@@ -1,5 +1,6 @@
 package com.ig.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.ig.cursomc.services.exceptions.DataIntegrityException;
@@ -41,6 +42,10 @@ public class CategoriaService {
 		catch (DataIntegrityViolationException ignored) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos");
 		}
+	}
+
+	public List<Categoria> findAll() {
+		return repo.findAll();
 	}
 
 }
