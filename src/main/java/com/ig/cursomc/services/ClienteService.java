@@ -1,7 +1,6 @@
 package com.ig.cursomc.services;
 
 import com.ig.cursomc.domain.Cliente;
-import com.ig.cursomc.domain.Cliente;
 import com.ig.cursomc.dto.ClienteDTO;
 import com.ig.cursomc.repositories.ClienteRepository;
 import com.ig.cursomc.services.exceptions.DataIntegrityException;
@@ -45,6 +44,7 @@ public class ClienteService {
 	}
 
 	public List<Cliente> findAll() {
+
 		return repo.findAll();
 	}
 
