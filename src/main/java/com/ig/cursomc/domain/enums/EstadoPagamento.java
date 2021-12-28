@@ -6,8 +6,8 @@ public enum EstadoPagamento {
     QUITADO(2, "Quitado"),
     CANCELADO(3, "Cancelado");
 
-    private int cod;
-    private String descricao;
+    private final int cod;
+    private final String descricao;
 
     private EstadoPagamento(int cod, String descricao) {
         this.cod = cod;

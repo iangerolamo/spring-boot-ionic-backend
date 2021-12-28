@@ -22,7 +22,9 @@ public class CategoriaResource {
 	
 	@Autowired
 	private CategoriaService service;
-//	ResponseEntity represents the whole HTTP response: status code, headers, and body.
+
+	//	ResponseEntity represents the whole HTTP response: status code, headers, and body.
+
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public ResponseEntity<Categoria> find(@PathVariable Integer id) {
     	Categoria obj = service.find(id);
