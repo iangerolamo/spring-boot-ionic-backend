@@ -1,15 +1,17 @@
 package com.ig.cursomc.services;
 
-import com.ig.cursomc.domain.Categoria;
-import com.ig.cursomc.domain.ItemPedido;
-import com.ig.cursomc.domain.PagamentoComBoleto;
-import com.ig.cursomc.domain.Pedido;
+import com.ig.cursomc.domain.*;
 import com.ig.cursomc.domain.enums.EstadoPagamento;
 import com.ig.cursomc.repositories.ItemPedidoRepository;
 import com.ig.cursomc.repositories.PagamentoRepository;
 import com.ig.cursomc.repositories.PedidoRepository;
+import com.ig.cursomc.resources.exception.AuthorizationException;
+import com.ig.cursomc.security.UserSS;
 import com.ig.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,9 @@ public class PedidoService {
 
 	@Autowired
 	private ProdutoService produtoService;
+
+	@Autowired
+	private ClienteService clienteService;
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
@@ -59,6 +64,16 @@ public class PedidoService {
 		}
 		itemPedidoRepository.saveAll(obj.getItens());
 		return obj;
+	}
+
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+		Cliente cliente =  clienteService.find(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 
 }
