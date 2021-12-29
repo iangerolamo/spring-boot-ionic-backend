@@ -3,12 +3,15 @@ package com.ig.cursomc.services;
 import com.ig.cursomc.domain.Cidade;
 import com.ig.cursomc.domain.Cliente;
 import com.ig.cursomc.domain.Endereco;
+import com.ig.cursomc.domain.enums.Perfil;
 import com.ig.cursomc.domain.enums.TipoCliente;
 import com.ig.cursomc.dto.ClienteDTO;
 import com.ig.cursomc.dto.ClienteNewDTO;
 import com.ig.cursomc.repositories.CidadeRepository;
 import com.ig.cursomc.repositories.ClienteRepository;
 import com.ig.cursomc.repositories.EnderecoRepository;
+import com.ig.cursomc.resources.exception.AuthorizationException;
+import com.ig.cursomc.security.UserSS;
 import com.ig.cursomc.services.exceptions.DataIntegrityException;
 import com.ig.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,12 @@ public class ClienteService {
 
 
 	public Cliente find(Integer id) {
+
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
